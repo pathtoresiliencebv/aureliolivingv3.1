@@ -1,4 +1,4 @@
 {
-  "buildCommand": "cd ../.. && pnpm install && pnpm --filter platform build",
-  "installCommand": "pnpm install --no-frozen-lockfile"
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && pnpm install && pnpm build --filter=platform"
 }
