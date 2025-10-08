@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "buildCommand": "cd apps/platform && pnpm build",
+  "outputDirectory": "apps/platform/.next",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "regions": ["ams1", "fra1"],
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_key",
+    "STRIPE_SECRET_KEY": "@stripe_secret_key",
+    "STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
+    "VERCEL_TOKEN": "@vercel_token",
+    "NEON_API_KEY": "@neon_api_key"
+  }
+}
+
