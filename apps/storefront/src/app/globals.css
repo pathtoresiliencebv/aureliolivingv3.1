@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --aurelio-primary: 199 89% 48%;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+

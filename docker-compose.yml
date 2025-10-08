@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # PostgreSQL for local development
+  postgres:
+    image: postgres:15-alpine
+    container_name: aurelio-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: aurelio
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: aurelio-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Supabase (using Supabase local development stack)
+  supabase:
+    image: supabase/postgres:15.1.0.117
+    container_name: aurelio-supabase
+    environment:
+      POSTGRES_PASSWORD: your-super-secret-and-long-postgres-password
+    ports:
+      - "54322:5432"
+    volumes:
+      - supabase_data:/var/lib/postgresql/data
+      - ./packages/database/migrations:/docker-entrypoint-initdb.d
+
+  # Listmonk for email marketing
+  listmonk-db:
+    image: postgres:13
+    container_name: aurelio-listmonk-db
+    environment:
+      POSTGRES_DB: listmonk
+      POSTGRES_USER: listmonk
+      POSTGRES_PASSWORD: listmonk
+    volumes:
+      - listmonk_db_data:/var/lib/postgresql/data
+
+  listmonk:
+    image: listmonk/listmonk:latest
+    container_name: aurelio-listmonk
+    depends_on:
+      - listmonk-db
+    ports:
+      - "9000:9000"
+    environment:
+      TZ: Etc/UTC
+    volumes:
+      - ./apps/listmonk/config.toml:/listmonk/config.toml
+
+volumes:
+  postgres_data:
+  redis_data:
+  supabase_data:
+  listmonk_db_data:
+
+networks:
+  default:
+    name: aurelio-network
+
