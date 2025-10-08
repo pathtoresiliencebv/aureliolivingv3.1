@@ -1,4 +1,5 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && pnpm install && pnpm build --filter=platform"
+  "buildCommand": "pnpm install && pnpm build",
+  "installCommand": "npm install -g pnpm@8.15.4 && cd ../.. && pnpm install --no-frozen-lockfile"
 }
